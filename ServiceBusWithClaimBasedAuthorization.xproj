@@ -7,7 +7,7 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>a2aa1a8d-c015-4eb1-a521-e9b4289c569f</ProjectGuid>
+    <ProjectGuid>6e8e69bd-7e7e-41ba-b143-83b8cf6c8721</ProjectGuid>
     <RootNamespace>ServiceBusWithClaimBasedAuthorization</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
