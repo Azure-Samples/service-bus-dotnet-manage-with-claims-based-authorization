@@ -4,7 +4,7 @@ platforms: .Net
 author: anudeepsharma
 ---
 
-#Getting Started with Service - Service Bus With Claim Based Authorization - in .Net #
+# Getting Started with Service - Service Bus With Claim Based Authorization - in .Net #
 
           Azure Service Bus basic scenario sample.
           - Create namespace with a queue and a topic
