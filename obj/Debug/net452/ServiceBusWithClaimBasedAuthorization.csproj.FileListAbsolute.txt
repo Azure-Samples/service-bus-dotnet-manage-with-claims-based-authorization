@@ -1,4 +1,0 @@
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\bin\Debug\net452\ServiceBusWithClaimBasedAuthorization.runtimeconfig.json
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\bin\Debug\net452\ServiceBusWithClaimBasedAuthorization.runtimeconfig.dev.json
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\obj\Debug\net452\ServiceBusWithClaimBasedAuthorization.csproj.ServiceBusWithClaimBasedAuthorization.exe.config
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\obj\Debug\net452\ServiceBusWithClaimBasedAuthorization.csproj.CoreCompileInputs.cache

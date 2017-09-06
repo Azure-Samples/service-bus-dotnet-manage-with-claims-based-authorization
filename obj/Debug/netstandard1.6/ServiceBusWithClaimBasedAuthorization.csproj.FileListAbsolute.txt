@@ -1,2 +1,0 @@
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\bin\Debug\netstandard1.6\ServiceBusWithClaimBasedAuthorization.deps.json
-C:\Sources\dotnet-samples\service-bus-dotnet-manage-with-claims-based-authorization\obj\Debug\netstandard1.6\ServiceBusWithClaimBasedAuthorization.csproj.CoreCompileInputs.cache
