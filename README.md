@@ -26,10 +26,10 @@ Set the environment variable `AZURE_AUTH_LOCATION` with the full path for an aut
     git clone https://github.com/Azure-Samples/service-bus-dotnet-manage-with-claims-based-authorization.git
 
     cd service-bus-dotnet-manage-with-claims-based-authorization
-
-    dotnet restore
-
-    dotnet run
+  
+    dotnet build
+    
+    bin\Debug\net452\ServiceBusWithClaimBasedAuthorization.exe
 
 ## More information ##
 
