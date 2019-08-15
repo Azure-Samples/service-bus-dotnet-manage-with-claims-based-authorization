@@ -4,22 +4,22 @@ languages:
 - csharp
 products:
 - azure
-services: Service-Bus
-platforms: dotnet
-author: yaohaizh
+extensions:
+- services: Service-Bus
+- platforms: dotnet
 ---
 
 # Getting started on managing Service Bus with claims based authorization in C# #
 
-          Azure Service Bus basic scenario sample.
-          - Create namespace with a queue and a topic
-          - Create 2 subscriptions for topic using different methods.
-          - Create send authorization rule for queue.
-          - Create send and listener authorization rule for Topic.
-          - Get the keys from authorization rule to connect to queue.
-          - Send a "Hello" message to queue using Data plan sdk for Service Bus.
-          - Send a "Hello" message to topic using Data plan sdk for Service Bus.
-          - Delete namespace
+ Azure Service Bus basic scenario sample.
+ - Create namespace with a queue and a topic
+ - Create 2 subscriptions for topic using different methods.
+ - Create send authorization rule for queue.
+ - Create send and listener authorization rule for Topic.
+ - Get the keys from authorization rule to connect to queue.
+ - Send a "Hello" message to queue using Data plan sdk for Service Bus.
+ - Send a "Hello" message to topic using Data plan sdk for Service Bus.
+ - Delete namespace
 
 
 ## Running this Sample ##
