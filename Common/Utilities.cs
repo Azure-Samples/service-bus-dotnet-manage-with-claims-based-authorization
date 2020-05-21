@@ -5,6 +5,7 @@ using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.AppService.Fluent.Models;
 using Microsoft.Azure.Management.Compute.Fluent;
 using Microsoft.Azure.Management.ContainerRegistry.Fluent;
+using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Management.ContainerRegistry.Fluent.Models;
 using Microsoft.Azure.Management.ContainerService.Fluent;
 using Microsoft.Azure.Management.ContainerService.Fluent.Models;
@@ -32,7 +33,6 @@ using Renci.SshNet;
 using Microsoft.Azure.Management.Search.Fluent;
 using Microsoft.Azure.Management.Search.Fluent.Models;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
-using Microsoft.Azure.ServiceBus;
 using System.Threading;
 using System.Net.Http.Headers;
 using Microsoft.Azure.Management.BatchAI.Fluent;
@@ -48,6 +48,7 @@ using Microsoft.Azure.Management.Msi.Fluent;
 using Microsoft.Azure.Management.Eventhub.Fluent;
 using Microsoft.Azure.Management.Monitor.Fluent;
 using Microsoft.Azure.Management.PrivateDns.Fluent;
+using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Management.Samples.Common
 {
@@ -278,7 +279,7 @@ namespace Microsoft.Azure.Management.Samples.Common
                         .Append(" [").Append(address.IpAddress).Append("]");
                 }
 
-                
+
                 info
                     // Show SSL cert
                     .Append("\n\t\t\tSSL certificate name: ").Append(rule.SslCertificate?.Name ?? "(none)")
@@ -2610,7 +2611,7 @@ namespace Microsoft.Azure.Management.Samples.Common
             if (actionGroup.AzureFunctionReceivers != null && actionGroup.AzureFunctionReceivers.Any())
             {
                 info.Append("\n\tAzure Functions receivers: ");
-                foreach(var er in actionGroup.AzureFunctionReceivers)
+                foreach (var er in actionGroup.AzureFunctionReceivers)
                 {
                     info.Append("\n\t\tName: ").Append(er.Name);
                     info.Append("\n\t\tFunction Name: ").Append(er.FunctionName);
@@ -2635,7 +2636,7 @@ namespace Microsoft.Azure.Management.Samples.Common
             if (actionGroup.ItsmReceivers != null && actionGroup.ItsmReceivers.Any())
             {
                 info.Append("\n\tITSM receivers: ");
-                foreach(var er in actionGroup.ItsmReceivers)
+                foreach (var er in actionGroup.ItsmReceivers)
                 {
                     info.Append("\n\t\tName: ").Append(er.Name);
                     info.Append("\n\t\tWorkspace Id: ").Append(er.WorkspaceId);
@@ -2674,7 +2675,7 @@ namespace Microsoft.Azure.Management.Samples.Common
             if (activityLogAlert.ActionGroupIds != null && activityLogAlert.ActionGroupIds.Any())
             {
                 info.Append("\n\tAction Groups: ");
-                foreach(var er in activityLogAlert.ActionGroupIds)
+                foreach (var er in activityLogAlert.ActionGroupIds)
                 {
                     info.Append("\n\t\tAction Group Id: ").Append(er);
                 }
@@ -3108,15 +3109,15 @@ namespace Microsoft.Azure.Management.Samples.Common
             return Path.Combine(Utilities.ProjectPath, "Asset", certificateName);
         }
 
-        public static void SendMessageToTopic(string connectionString, string topicName, string message)
+        public static async Task SendMessageToTopic(string connectionString, string topicName, string message)
         {
             if (!IsRunningMocked)
             {
                 try
                 {
-                    var topicClient = new TopicClient(connectionString, topicName);
-                    topicClient.SendAsync(new Message(Encoding.UTF8.GetBytes(message))).Wait();
-                    topicClient.Close();
+                    await using var client = new ServiceBusClient(connectionString);
+                    var sender = client.CreateSender(topicName);
+                    await sender.SendAsync(new ServiceBusMessage(Encoding.UTF8.GetBytes(message)));
                 }
                 catch (Exception)
                 {
@@ -3124,15 +3125,15 @@ namespace Microsoft.Azure.Management.Samples.Common
             }
         }
 
-        public static void SendMessageToQueue(string connectionString, string queueName, string message)
+        public static async Task SendMessageToQueue(string connectionString, string queueName, string message)
         {
             if (!IsRunningMocked)
             {
                 try
                 {
-                    var queueClient = new QueueClient(connectionString, queueName, ReceiveMode.PeekLock);
-                    queueClient.SendAsync(new Message(Encoding.UTF8.GetBytes(message))).Wait();
-                    queueClient.Close();
+                    await using var client = new ServiceBusClient(connectionString);
+                    var sender = client.CreateSender(queueName);
+                    await sender.SendAsync(new ServiceBusMessage(Encoding.UTF8.GetBytes(message)));
                 }
                 catch (Exception)
                 {

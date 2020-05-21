@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-
 using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.ServiceBus.Fluent.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 using Microsoft.Azure.Management.Samples.Common;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
-
 using System;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace ServiceBusWithClaimBasedAuthorization
 {
@@ -88,10 +84,10 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //=============================================================
                 // Send a message to queue.
-                Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello");
+                Task.Run(() => Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello")).Wait();
                 //=============================================================
                 // Send a message to topic.
-                Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello");
+                Task.Run(() => Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello")).Wait();
                 //=============================================================
                 // Delete a namespace
                 Utilities.Log("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
