@@ -85,9 +85,11 @@ namespace ServiceBusWithClaimBasedAuthorization
                 //=============================================================
                 // Send a message to queue.
                 Task.Run(() => Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello")).Wait();
+
                 //=============================================================
                 // Send a message to topic.
                 Task.Run(() => Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello")).Wait();
+
                 //=============================================================
                 // Delete a namespace
                 Utilities.Log("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
@@ -96,9 +98,11 @@ namespace ServiceBusWithClaimBasedAuthorization
                 {
                     azure.ServiceBusNamespaces.DeleteById(serviceBusNamespace.Id);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Utilities.Log("Unexpected error occured: " + e.Message);
                 }
+
                 Utilities.Log("Deleted namespace " + namespaceName + "...");
             }
             finally
@@ -119,6 +123,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                 }
             }
         }
+
         public static void Main(string[] args)
         {
             try
@@ -127,7 +132,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                 // Authenticate
                 var credentials = SdkContext.AzureCredentialsFactory.FromFile(Environment.GetEnvironmentVariable("AZURE_AUTH_LOCATION"));
 
-                var azure = Azure
+                var azure = Microsoft.Azure.Management.Fluent.Azure
                     .Configure()
                     .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
                     .Authenticate(credentials)
