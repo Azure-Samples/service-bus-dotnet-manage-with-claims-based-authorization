@@ -84,11 +84,11 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //=============================================================
                 // Send a message to queue.
-                Task.Run(() => Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello")).Wait();
+                Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello");
 
                 //=============================================================
                 // Send a message to topic.
-                Task.Run(() => Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello")).Wait();
+                Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello");
 
                 //=============================================================
                 // Delete a namespace
