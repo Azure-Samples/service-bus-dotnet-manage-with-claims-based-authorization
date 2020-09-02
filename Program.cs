@@ -24,7 +24,7 @@ namespace ServiceBusWithClaimBasedAuthorization
          * - Send a "Hello" message to topic using Data plan sdk for Service Bus.
          * - Delete namespace
          */
-        public static void RunSample(IAzure azure)
+        public static async Task RunSample(IAzure azure)
         {
             // New resources
             var rgName = SdkContext.RandomResourceName("rgSB03_", 24);
@@ -84,11 +84,11 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //=============================================================
                 // Send a message to queue.
-                Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello");
+                await Utilities.SendMessageToQueueAsync(keys.PrimaryConnectionString, queueName, "Hello");
 
                 //=============================================================
                 // Send a message to topic.
-                Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello");
+                await Utilities.SendMessageToTopicAsync(keys.PrimaryConnectionString, topicName, "Hello");
 
                 //=============================================================
                 // Delete a namespace
@@ -124,7 +124,7 @@ namespace ServiceBusWithClaimBasedAuthorization
             }
         }
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                 // Print selected subscription
                 Utilities.Log("Selected subscription: " + azure.SubscriptionId);
 
-                RunSample(azure);
+                await RunSample(azure);
             }
             catch (Exception e)
             {
