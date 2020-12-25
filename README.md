@@ -16,7 +16,7 @@ urlFragment: service-bus-dotnet-manage-with-claims-based-authorization
 
 To complete this tutorial:
 
-If you don't have an Azure subscription, create a [free account] before you begin.
+- **Azure Subscription:**  To use Azure services, including Azure Service Bus, you'll need a subscription.  If you do not have an existing Azure account, you may sign up for a [free trial](https://azure.microsoft.com/free) or use your [Visual Studio Subscription](https://visualstudio.microsoft.com/subscriptions/) benefits when you [create an account](https://account.windowsazure.com/Home/Index).
 
 ### Create an auth file
 
