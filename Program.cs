@@ -39,7 +39,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                 //============================================================
                 // Create a namespace.
 
-                Utilities.Log("Creating name space " + namespaceName + " along with a queue " + queueName + " and a topic " + topicName + " in resource group " + rgName + "...");
+                Console.WriteLine("Creating name space " + namespaceName + " along with a queue " + queueName + " and a topic " + topicName + " in resource group " + rgName + "...");
 
                 var serviceBusNamespace = azure.ServiceBusNamespaces
                         .Define(namespaceName)
@@ -50,7 +50,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                         .WithNewTopic(topicName, 1024)
                         .Create();
 
-                Utilities.Log("Created service bus " + serviceBusNamespace.Name + " (with queue and topic)");
+                Console.WriteLine("Created service bus " + serviceBusNamespace.Name + " (with queue and topic)");
                 Utilities.Print(serviceBusNamespace);
 
                 var queue = serviceBusNamespace.Queues.GetByName(queueName);
@@ -61,12 +61,12 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //============================================================
                 // Create 2 subscriptions in topic using different methods.
-                Utilities.Log("Creating a subscription in the topic using update on topic");
+                Console.WriteLine("Creating a subscription in the topic using update on topic");
                 topic = topic.Update().WithNewSubscription(subscription1Name).Apply();
 
                 var subscription1 = topic.Subscriptions.GetByName(subscription1Name);
 
-                Utilities.Log("Creating another subscription in the topic using direct create method for subscription");
+                Console.WriteLine("Creating another subscription in the topic using direct create method for subscription");
                 var subscription2 = topic.Subscriptions.Define(subscription2Name).Create();
 
                 Utilities.Print(subscription1);
@@ -74,11 +74,11 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //=============================================================
                 // Create new authorization rule for queue to send message.
-                Utilities.Log("Create authorization rule for queue ...");
+                Console.WriteLine("Create authorization rule for queue ...");
                 var sendQueueAuthorizationRule = serviceBusNamespace.AuthorizationRules.Define("SendRule").WithSendingEnabled().Create();
                 Utilities.Print(sendQueueAuthorizationRule);
 
-                Utilities.Log("Getting keys for authorization rule ...");
+                Console.WriteLine("Getting keys for authorization rule ...");
                 var keys = sendQueueAuthorizationRule.GetKeys();
                 Utilities.Print(keys);
 
@@ -92,7 +92,7 @@ namespace ServiceBusWithClaimBasedAuthorization
 
                 //=============================================================
                 // Delete a namespace
-                Utilities.Log("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
+                Console.WriteLine("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
                 // This will delete the namespace and queue within it.
                 try
                 {
@@ -100,26 +100,26 @@ namespace ServiceBusWithClaimBasedAuthorization
                 }
                 catch (Exception e)
                 {
-                    Utilities.Log("Unexpected error occured: " + e.Message);
+                    Console.WriteLine("Unexpected error occured: " + e.Message);
                 }
 
-                Utilities.Log("Deleted namespace " + namespaceName + "...");
+                Console.WriteLine("Deleted namespace " + namespaceName + "...");
             }
             finally
             {
                 try
                 {
-                    Utilities.Log("Deleting Resource Group: " + rgName);
+                    Console.WriteLine("Deleting Resource Group: " + rgName);
                     azure.ResourceGroups.BeginDeleteByName(rgName);
-                    Utilities.Log("Deleted Resource Group: " + rgName);
+                    Console.WriteLine("Deleted Resource Group: " + rgName);
                 }
                 catch (NullReferenceException)
                 {
-                    Utilities.Log("Did not create any resources in Azure. No clean up is necessary");
+                    Console.WriteLine("Did not create any resources in Azure. No clean up is necessary");
                 }
                 catch (Exception g)
                 {
-                    Utilities.Log(g);
+                    Console.WriteLine(g);
                 }
             }
         }
@@ -139,13 +139,13 @@ namespace ServiceBusWithClaimBasedAuthorization
                     .WithDefaultSubscription();
 
                 // Print selected subscription
-                Utilities.Log("Selected subscription: " + azure.SubscriptionId);
+                Console.WriteLine("Selected subscription: " + azure.SubscriptionId);
 
                 await RunSample(azure);
             }
             catch (Exception e)
             {
-                Utilities.Log(e.ToString());
+                Console.WriteLine(e.ToString());
             }
         }
     }
