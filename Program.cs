@@ -2,16 +2,13 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 
-using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.ServiceBus.Fluent.Models;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
-using Microsoft.Azure.Management.Samples.Common;
-using Microsoft.Azure.Management.ServiceBus.Fluent;
-
 using System;
 using System.Linq;
 using System.Text;
+using Microsoft.Azure.Management.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using Microsoft.Azure.Management.ServiceBus.Fluent;
 
 namespace ServiceBusWithClaimBasedAuthorization
 {
@@ -24,8 +21,6 @@ namespace ServiceBusWithClaimBasedAuthorization
          * - Create send authorization rule for queue.
          * - Create send and listener authorization rule for Topic.
          * - Get the keys from authorization rule to connect to queue.
-         * - Send a "Hello" message to queue using Data plan sdk for Service Bus.
-         * - Send a "Hello" message to topic using Data plan sdk for Service Bus.
          * - Delete namespace
          */
         public static void RunSample(IAzure azure)
@@ -43,7 +38,7 @@ namespace ServiceBusWithClaimBasedAuthorization
                 //============================================================
                 // Create a namespace.
 
-                Utilities.Log("Creating name space " + namespaceName + " along with a queue " + queueName + " and a topic " + topicName + " in resource group " + rgName + "...");
+                Console.WriteLine("Creating name space " + namespaceName + " along with a queue " + queueName + " and a topic " + topicName + " in resource group " + rgName + "...");
 
                 var serviceBusNamespace = azure.ServiceBusNamespaces
                         .Define(namespaceName)
@@ -54,47 +49,129 @@ namespace ServiceBusWithClaimBasedAuthorization
                         .WithNewTopic(topicName, 1024)
                         .Create();
 
-                Utilities.Log("Created service bus " + serviceBusNamespace.Name + " (with queue and topic)");
-                Utilities.Print(serviceBusNamespace);
+                Console.WriteLine("Created service bus " + serviceBusNamespace.Name + " (with queue and topic)");
+                var builderServiceBusNamespace = new StringBuilder()
+                    .Append("Service bus Namespace: ").Append(serviceBusNamespace.Id)
+                    .Append("\n\tName: ").Append(serviceBusNamespace.Name)
+                    .Append("\n\tRegion: ").Append(serviceBusNamespace.RegionName)
+                    .Append("\n\tResourceGroupName: ").Append(serviceBusNamespace.ResourceGroupName)
+                    .Append("\n\tCreatedAt: ").Append(serviceBusNamespace.CreatedAt)
+                    .Append("\n\tUpdatedAt: ").Append(serviceBusNamespace.UpdatedAt)
+                    .Append("\n\tDnsLabel: ").Append(serviceBusNamespace.DnsLabel)
+                    .Append("\n\tFQDN: ").Append(serviceBusNamespace.Fqdn)
+                    .Append("\n\tSku: ")
+                    .Append("\n\t\tCapacity: ").Append(serviceBusNamespace.Sku.Capacity)
+                    .Append("\n\t\tSkuName: ").Append(serviceBusNamespace.Sku.Name)
+                    .Append("\n\t\tTier: ").Append(serviceBusNamespace.Sku.Tier);
+
+                Console.WriteLine(builderServiceBusNamespace.ToString());
 
                 var queue = serviceBusNamespace.Queues.GetByName(queueName);
-                Utilities.Print(queue);
+                StringBuilder builderQueueName = new StringBuilder()
+                    .Append("Service bus Queue: ").Append(queue.Id)
+                    .Append("\n\tName: ").Append(queue.Name)
+                    .Append("\n\tResourceGroupName: ").Append(queue.ResourceGroupName)
+                    .Append("\n\tCreatedAt: ").Append(queue.CreatedAt)
+                    .Append("\n\tUpdatedAt: ").Append(queue.UpdatedAt)
+                    .Append("\n\tAccessedAt: ").Append(queue.AccessedAt)
+                    .Append("\n\tActiveMessageCount: ").Append(queue.ActiveMessageCount)
+                    .Append("\n\tCurrentSizeInBytes: ").Append(queue.CurrentSizeInBytes)
+                    .Append("\n\tDeadLetterMessageCount: ").Append(queue.DeadLetterMessageCount)
+                    .Append("\n\tDefaultMessageTtlDuration: ").Append(queue.DefaultMessageTtlDuration)
+                    .Append("\n\tDuplicateMessageDetectionHistoryDuration: ").Append(queue.DuplicateMessageDetectionHistoryDuration)
+                    .Append("\n\tIsBatchedOperationsEnabled: ").Append(queue.IsBatchedOperationsEnabled)
+                    .Append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").Append(queue.IsDeadLetteringEnabledForExpiredMessages)
+                    .Append("\n\tIsDuplicateDetectionEnabled: ").Append(queue.IsDuplicateDetectionEnabled)
+                    .Append("\n\tIsExpressEnabled: ").Append(queue.IsExpressEnabled)
+                    .Append("\n\tIsPartitioningEnabled: ").Append(queue.IsPartitioningEnabled)
+                    .Append("\n\tIsSessionEnabled: ").Append(queue.IsSessionEnabled)
+                    .Append("\n\tDeleteOnIdleDurationInMinutes: ").Append(queue.DeleteOnIdleDurationInMinutes)
+                    .Append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").Append(queue.MaxDeliveryCountBeforeDeadLetteringMessage)
+                    .Append("\n\tMaxSizeInMB: ").Append(queue.MaxSizeInMB)
+                    .Append("\n\tMessageCount: ").Append(queue.MessageCount)
+                    .Append("\n\tScheduledMessageCount: ").Append(queue.ScheduledMessageCount)
+                    .Append("\n\tStatus: ").Append(queue.Status)
+                    .Append("\n\tTransferMessageCount: ").Append(queue.TransferMessageCount)
+                    .Append("\n\tLockDurationInSeconds: ").Append(queue.LockDurationInSeconds)
+                    .Append("\n\tTransferDeadLetterMessageCount: ").Append(queue.TransferDeadLetterMessageCount);
+
+                Console.WriteLine(builderQueueName.ToString());
 
                 var topic = serviceBusNamespace.Topics.GetByName(topicName);
-                Utilities.Print(topic);
+                StringBuilder builderTopicName = new StringBuilder()
+                    .Append("Service bus topic: ").Append(topic.Id)
+                    .Append("\n\tName: ").Append(topic.Name)
+                    .Append("\n\tResourceGroupName: ").Append(topic.ResourceGroupName)
+                    .Append("\n\tCreatedAt: ").Append(topic.CreatedAt)
+                    .Append("\n\tUpdatedAt: ").Append(topic.UpdatedAt)
+                    .Append("\n\tAccessedAt: ").Append(topic.AccessedAt)
+                    .Append("\n\tActiveMessageCount: ").Append(topic.ActiveMessageCount)
+                    .Append("\n\tCurrentSizeInBytes: ").Append(topic.CurrentSizeInBytes)
+                    .Append("\n\tDeadLetterMessageCount: ").Append(topic.DeadLetterMessageCount)
+                    .Append("\n\tDefaultMessageTtlDuration: ").Append(topic.DefaultMessageTtlDuration)
+                    .Append("\n\tDuplicateMessageDetectionHistoryDuration: ").Append(topic.DuplicateMessageDetectionHistoryDuration)
+                    .Append("\n\tIsBatchedOperationsEnabled: ").Append(topic.IsBatchedOperationsEnabled)
+                    .Append("\n\tIsDuplicateDetectionEnabled: ").Append(topic.IsDuplicateDetectionEnabled)
+                    .Append("\n\tIsExpressEnabled: ").Append(topic.IsExpressEnabled)
+                    .Append("\n\tIsPartitioningEnabled: ").Append(topic.IsPartitioningEnabled)
+                    .Append("\n\tDeleteOnIdleDurationInMinutes: ").Append(topic.DeleteOnIdleDurationInMinutes)
+                    .Append("\n\tMaxSizeInMB: ").Append(topic.MaxSizeInMB)
+                    .Append("\n\tScheduledMessageCount: ").Append(topic.ScheduledMessageCount)
+                    .Append("\n\tStatus: ").Append(topic.Status)
+                    .Append("\n\tTransferMessageCount: ").Append(topic.TransferMessageCount)
+                    .Append("\n\tSubscriptionCount: ").Append(topic.SubscriptionCount)
+                    .Append("\n\tTransferDeadLetterMessageCount: ").Append(topic.TransferDeadLetterMessageCount);
+
+                Console.WriteLine(builderTopicName.ToString());
 
                 //============================================================
                 // Create 2 subscriptions in topic using different methods.
-                Utilities.Log("Creating a subscription in the topic using update on topic");
+                Console.WriteLine("Creating a subscription in the topic using update on topic");
                 topic = topic.Update().WithNewSubscription(subscription1Name).Apply();
 
                 var subscription1 = topic.Subscriptions.GetByName(subscription1Name);
 
-                Utilities.Log("Creating another subscription in the topic using direct create method for subscription");
+                Console.WriteLine("Creating another subscription in the topic using direct create method for subscription");
                 var subscription2 = topic.Subscriptions.Define(subscription2Name).Create();
 
-                Utilities.Print(subscription1);
-                Utilities.Print(subscription2);
+                PrintSubscriptionsInTopic(subscription1);
+
+                PrintSubscriptionsInTopic(subscription2);
 
                 //=============================================================
                 // Create new authorization rule for queue to send message.
-                Utilities.Log("Create authorization rule for queue ...");
+                Console.WriteLine("Create authorization rule for queue ...");
                 var sendQueueAuthorizationRule = serviceBusNamespace.AuthorizationRules.Define("SendRule").WithSendingEnabled().Create();
-                Utilities.Print(sendQueueAuthorizationRule);
+                StringBuilder builderSendQueueAuthorizationRule = new StringBuilder()
+                    .Append("Service bus queue authorization rule: ").Append(sendQueueAuthorizationRule.Id)
+                    .Append("\n\tName: ").Append(sendQueueAuthorizationRule.Name)
+                    .Append("\n\tResourceGroupName: ").Append(sendQueueAuthorizationRule.ResourceGroupName)
+                    .Append("\n\tNamespace Name: ").Append(sendQueueAuthorizationRule.NamespaceName);
 
-                Utilities.Log("Getting keys for authorization rule ...");
+                var rights = sendQueueAuthorizationRule.Rights;
+                builderSendQueueAuthorizationRule.Append("\n\tNumber of access rights in queue: ").Append(rights.Count());
+                foreach (var right in rights)
+                {
+                    builderSendQueueAuthorizationRule.Append("\n\t\tAccessRight: ")
+                            .Append("\n\t\t\tName :").Append(right.ToString());
+                }
+
+                Console.WriteLine(builderSendQueueAuthorizationRule.ToString());
+
+                Console.WriteLine("Getting keys for authorization rule ...");
                 var keys = sendQueueAuthorizationRule.GetKeys();
-                Utilities.Print(keys);
+                StringBuilder builderKeys = new StringBuilder()
+                    .Append("Authorization keys: ")
+                    .Append("\n\tPrimaryKey: ").Append(keys.PrimaryKey)
+                    .Append("\n\tPrimaryConnectionString: ").Append(keys.PrimaryConnectionString)
+                    .Append("\n\tSecondaryKey: ").Append(keys.SecondaryKey)
+                    .Append("\n\tSecondaryConnectionString: ").Append(keys.SecondaryConnectionString);
 
-                //=============================================================
-                // Send a message to queue.
-                Utilities.SendMessageToQueue(keys.PrimaryConnectionString, queueName, "Hello");
-                //=============================================================
-                // Send a message to topic.
-                Utilities.SendMessageToTopic(keys.PrimaryConnectionString, topicName, "Hello");
+                Console.WriteLine(builderKeys.ToString());
+
                 //=============================================================
                 // Delete a namespace
-                Utilities.Log("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
+                Console.WriteLine("Deleting namespace " + namespaceName + " [topic, queues and subscription will delete along with that]...");
                 // This will delete the namespace and queue within it.
                 try
                 {
@@ -103,23 +180,23 @@ namespace ServiceBusWithClaimBasedAuthorization
                 catch (Exception)
                 {
                 }
-                Utilities.Log("Deleted namespace " + namespaceName + "...");
+                Console.WriteLine("Deleted namespace " + namespaceName + "...");
             }
             finally
             {
                 try
                 {
-                    Utilities.Log("Deleting Resource Group: " + rgName);
+                    Console.WriteLine("Deleting Resource Group: " + rgName);
                     azure.ResourceGroups.BeginDeleteByName(rgName);
-                    Utilities.Log("Deleted Resource Group: " + rgName);
+                    Console.WriteLine("Deleted Resource Group: " + rgName);
                 }
                 catch (NullReferenceException)
                 {
-                    Utilities.Log("Did not create any resources in Azure. No clean up is necessary");
+                    Console.WriteLine("Did not create any resources in Azure. No clean up is necessary");
                 }
                 catch (Exception g)
                 {
-                    Utilities.Log(g);
+                    Console.WriteLine(g);
                 }
             }
         }
@@ -138,14 +215,42 @@ namespace ServiceBusWithClaimBasedAuthorization
                     .WithDefaultSubscription();
 
                 // Print selected subscription
-                Utilities.Log("Selected subscription: " + azure.SubscriptionId);
+                Console.WriteLine("Selected subscription: " + azure.SubscriptionId);
 
                 RunSample(azure);
             }
             catch (Exception e)
             {
-                Utilities.Log(e.ToString());
+                Console.WriteLine(e.ToString());
             }
+        }
+
+        public static void PrintSubscriptionsInTopic(Microsoft.Azure.Management.ServiceBus.Fluent.ISubscription serviceBusSubscription)
+        {
+            StringBuilder builder = new StringBuilder()
+                    .Append("Service bus subscription: ").Append(serviceBusSubscription.Id)
+                    .Append("\n\tName: ").Append(serviceBusSubscription.Name)
+                    .Append("\n\tResourceGroupName: ").Append(serviceBusSubscription.ResourceGroupName)
+                    .Append("\n\tCreatedAt: ").Append(serviceBusSubscription.CreatedAt)
+                    .Append("\n\tUpdatedAt: ").Append(serviceBusSubscription.UpdatedAt)
+                    .Append("\n\tAccessedAt: ").Append(serviceBusSubscription.AccessedAt)
+                    .Append("\n\tActiveMessageCount: ").Append(serviceBusSubscription.ActiveMessageCount)
+                    .Append("\n\tDeadLetterMessageCount: ").Append(serviceBusSubscription.DeadLetterMessageCount)
+                    .Append("\n\tDefaultMessageTtlDuration: ").Append(serviceBusSubscription.DefaultMessageTtlDuration)
+                    .Append("\n\tIsBatchedOperationsEnabled: ").Append(serviceBusSubscription.IsBatchedOperationsEnabled)
+                    .Append("\n\tDeleteOnIdleDurationInMinutes: ").Append(serviceBusSubscription.DeleteOnIdleDurationInMinutes)
+                    .Append("\n\tScheduledMessageCount: ").Append(serviceBusSubscription.ScheduledMessageCount)
+                    .Append("\n\tStatus: ").Append(serviceBusSubscription.Status)
+                    .Append("\n\tTransferMessageCount: ").Append(serviceBusSubscription.TransferMessageCount)
+                    .Append("\n\tIsDeadLetteringEnabledForExpiredMessages: ").Append(serviceBusSubscription.IsDeadLetteringEnabledForExpiredMessages)
+                    .Append("\n\tIsSessionEnabled: ").Append(serviceBusSubscription.IsSessionEnabled)
+                    .Append("\n\tLockDurationInSeconds: ").Append(serviceBusSubscription.LockDurationInSeconds)
+                    .Append("\n\tMaxDeliveryCountBeforeDeadLetteringMessage: ").Append(serviceBusSubscription.MaxDeliveryCountBeforeDeadLetteringMessage)
+                    .Append("\n\tIsDeadLetteringEnabledForFilterEvaluationFailedMessages: ").Append(serviceBusSubscription.IsDeadLetteringEnabledForFilterEvaluationFailedMessages)
+                    .Append("\n\tTransferMessageCount: ").Append(serviceBusSubscription.TransferMessageCount)
+                    .Append("\n\tTransferDeadLetterMessageCount: ").Append(serviceBusSubscription.TransferDeadLetterMessageCount);
+
+            Console.WriteLine(builder.ToString());
         }
     }
 
