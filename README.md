@@ -19,7 +19,7 @@ extensions:
  - Get the keys from authorization rule to connect to queue.
  - Delete namespace
 
- More about how to use Azure Service Bus see [here](https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/servicebus/Azure.Messaging.ServiceBus).
+ For more on how to use Azure Service Bus see the [samples for sending and receiving messages](https://docs.microsoft.com/samples/azure/azure-sdk-for-net/azuremessagingservicebus-samples/).
 
 
 ## Running this Sample ##
