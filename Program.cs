@@ -79,32 +79,13 @@ namespace ServiceBusWithClaimBasedAuthorization
                 // Create new authorization rule for queue to send message.
                 Console.WriteLine("Create authorization rule for queue ...");
                 var sendQueueAuthorizationRule = serviceBusNamespace.AuthorizationRules.Define("SendRule").WithSendingEnabled().Create();
-                StringBuilder builderSendQueueAuthorizationRule = new StringBuilder()
-                    .Append("Service bus queue authorization rule: ").Append(sendQueueAuthorizationRule.Id)
-                    .Append("\n\tName: ").Append(sendQueueAuthorizationRule.Name)
-                    .Append("\n\tResourceGroupName: ").Append(sendQueueAuthorizationRule.ResourceGroupName)
-                    .Append("\n\tNamespace Name: ").Append(sendQueueAuthorizationRule.NamespaceName);
 
-                var rights = sendQueueAuthorizationRule.Rights;
-                builderSendQueueAuthorizationRule.Append("\n\tNumber of access rights in queue: ").Append(rights.Count());
-                foreach (var right in rights)
-                {
-                    builderSendQueueAuthorizationRule.Append("\n\t\tAccessRight: ")
-                            .Append("\n\t\t\tName :").Append(right.ToString());
-                }
-
-                Console.WriteLine(builderSendQueueAuthorizationRule.ToString());
+                PrintSendQueueAuthorizationRule(sendQueueAuthorizationRule);
 
                 Console.WriteLine("Getting keys for authorization rule ...");
                 var keys = sendQueueAuthorizationRule.GetKeys();
-                StringBuilder builderKeys = new StringBuilder()
-                    .Append("Authorization keys: ")
-                    .Append("\n\tPrimaryKey: ").Append(keys.PrimaryKey)
-                    .Append("\n\tPrimaryConnectionString: ").Append(keys.PrimaryConnectionString)
-                    .Append("\n\tSecondaryKey: ").Append(keys.SecondaryKey)
-                    .Append("\n\tSecondaryConnectionString: ").Append(keys.SecondaryConnectionString);
 
-                Console.WriteLine(builderKeys.ToString());
+                PrintKeys(keys);
 
                 //=============================================================
                 // Delete a namespace
@@ -160,6 +141,37 @@ namespace ServiceBusWithClaimBasedAuthorization
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        static void PrintSendQueueAuthorizationRule(INamespaceAuthorizationRule sendQueueAuthorizationRule)
+        {
+            StringBuilder builderSendQueueAuthorizationRule = new StringBuilder()
+                    .Append("Service bus queue authorization rule: ").Append(sendQueueAuthorizationRule.Id)
+                    .Append("\n\tName: ").Append(sendQueueAuthorizationRule.Name)
+                    .Append("\n\tResourceGroupName: ").Append(sendQueueAuthorizationRule.ResourceGroupName)
+                    .Append("\n\tNamespace Name: ").Append(sendQueueAuthorizationRule.NamespaceName);
+
+            var rights = sendQueueAuthorizationRule.Rights;
+            builderSendQueueAuthorizationRule.Append("\n\tNumber of access rights in queue: ").Append(rights.Count());
+            foreach (var right in rights)
+            {
+                builderSendQueueAuthorizationRule.Append("\n\t\tAccessRight: ")
+                        .Append("\n\t\t\tName :").Append(right.ToString());
+            }
+
+            Console.WriteLine(builderSendQueueAuthorizationRule.ToString());
+        }
+
+        static void PrintKeys(IAuthorizationKeys keys)
+        {
+            StringBuilder builderKeys = new StringBuilder()
+                    .Append("Authorization keys: ")
+                    .Append("\n\tPrimaryKey: ").Append(keys.PrimaryKey)
+                    .Append("\n\tPrimaryConnectionString: ").Append(keys.PrimaryConnectionString)
+                    .Append("\n\tSecondaryKey: ").Append(keys.SecondaryKey)
+                    .Append("\n\tSecondaryConnectionString: ").Append(keys.SecondaryConnectionString);
+
+            Console.WriteLine(builderKeys.ToString());
         }
 
         static void PrintServiceBusNamespace(IServiceBusNamespace serviceBusNamespace)
