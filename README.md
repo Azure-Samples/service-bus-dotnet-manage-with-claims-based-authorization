@@ -17,9 +17,9 @@ extensions:
  - Create send authorization rule for queue.
  - Create send and listener authorization rule for Topic.
  - Get the keys from authorization rule to connect to queue.
- - Send a "Hello" message to queue using Data plan sdk for Service Bus.
- - Send a "Hello" message to topic using Data plan sdk for Service Bus.
  - Delete namespace
+
+ For more on how to use Azure Service Bus see the [samples for sending and receiving messages](https://docs.microsoft.com/samples/azure/azure-sdk-for-net/azuremessagingservicebus-samples/).
 
 
 ## Running this Sample ##
